@@ -1,13 +1,41 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
+        <View style={styles.row}>
+          <View style={styles.formGroup}>
+            <Text>Username</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder='email@email.com'
+              underlineColorAndroid='#fff'
+              keyboardType='email-address'
+              // onChangeText={(text) => this.setState({text})}
+              // value={this.state.text}
+            />
+          </View>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.formGroup}>
+            <Text>Password</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder='********'
+              underlineColorAndroid='#fff'
+              secureTextEntry={true}
+              // onChangeText={(text) => this.setState({text})}
+              // value={this.state.text}
+            />
+          </View>
+        </View>
       </View>
     );
   }
@@ -20,4 +48,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  row: {
+    flexDirection: 'row'
+  },
+  formGroup: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    margin: 10
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 5
+  }
 });
