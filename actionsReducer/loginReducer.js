@@ -13,7 +13,7 @@ export default (state = initialState.login, action) => {
         message: null
       }
     case LOGIN_FAILURE:
-      return{
+      return {
         ...state,
         token: null,
         message: action.payload

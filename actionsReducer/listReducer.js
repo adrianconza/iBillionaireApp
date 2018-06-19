@@ -1,22 +1,32 @@
 import initialState from './initialState';
 import {
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE
+  LIST_INIT,
+  LIST_SUCCESS,
+  LIST_FAILURE,
 } from './types'
 
 export default (state = initialState.list, action) => {
   switch (action.type) {
-    case LOGIN_SUCCESS:
+    case LIST_INIT:
       return {
         ...state,
-        token: action.payload,
-        message: null
+        list: [],
+        message: null,
+        loading: true
       }
-    case LOGIN_FAILURE:
-      return{
+    case LIST_SUCCESS:
+      return {
         ...state,
-        token: null,
-        message: action.payload
+        list: action.payload,
+        message: null,
+        loading: false
+      }
+    case LIST_FAILURE:
+      return {
+        ...state,
+        list: [],
+        message: action.payload,
+        loading: false
       }
     default:
       return state

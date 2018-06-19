@@ -4,7 +4,9 @@ const initialState = {
     message: null
   },
   list: {
-    
+    list: [],
+    message: null,
+    loading: true
   }
 }
 

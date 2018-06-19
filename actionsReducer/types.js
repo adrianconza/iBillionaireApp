@@ -1,2 +1,6 @@
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+
+export const LIST_INIT = 'LIST_INIT'
+export const LIST_SUCCESS = 'LIST_SUCCESS'
+export const LIST_FAILURE = 'LIST_FAILURE'

@@ -4,21 +4,45 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
   StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-  Alert
+  ListView,
+  View
 } from 'react-native';
 
-import * as actions from './actionsReducer/loginActions'
+import Loading from './components/Loading'
+import ListItem from './components/ListItem'
+
+import * as actions from './actionsReducer/listActions'
 
 class List extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    }
+  }
+
+  async componentWillMount () {
+    await this.props.actions.list(this.props.token)
+    this.setState({
+       dataSource: this.state.dataSource.cloneWithRows(this.props.list)
+     })
+  }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>HOLA</Text>
+        { this.props.loading && <Loading /> }
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={item => <ListItem
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            description={item.description}
+            image={item.thumbnail_150}
+          />}
+        />
       </View>
     );
   }
@@ -27,61 +51,35 @@ class List extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 30
-  },
-  row: {
-    flexDirection: 'row'
-  },
-  formGroup: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    margin: 10
-  },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10
-  },
-  textInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 5
+    backgroundColor: '#fff'
   }
 });
 
-// Login.defaultProps = {
-//   token: '',
-//   message: ''
-// }
-//
-// Login.propTypes = {
-//   token: PropTypes.string,
-//   message: PropTypes.string,
-//   actions: PropTypes.objectOf(PropTypes.func).isRequired,
-// }
-//
-// function mapStateToProps (state) {
-//   return {
-//     token: state.login.token,
-//     message: state.login.message
-//   }
-// }
-//
-// function mapDispatchProps (dispatch) {
-//   return {
-//     actions: bindActionCreators(actions, dispatch)
-//   }
-// }
+List.defaultProps = {
+  list: [],
+}
 
-// export default connect(mapStateToProps, mapDispatchProps)(Login)
-export default List
+List.propTypes = {
+  token: PropTypes.string,
+  list: PropTypes.arrayOf(PropTypes.object),
+  message: PropTypes.string,
+  loading: PropTypes.bool.isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+}
+
+function mapStateToProps (state) {
+  return {
+    token: state.login.token,
+    list: state.list.list,
+    message: state.list.message,
+    loading: state.list.loading
+  }
+}
+
+function mapDispatchProps (dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchProps)(List)
